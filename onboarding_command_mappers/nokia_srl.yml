@@ -11,8 +11,8 @@ sync_devices:
     commands:
       - command: "show version | as json"
         parser: "none"
-        jpath: "'basic system info'.'Serial Number'"
-        # post_processor: "{{ obj | unique | first }}"
+        jpath: "{{ obj }}"
+        post_processor: "{{ obj['basic system info']['Serial Number'] }}"
         iterable_type: "str"
   device_type:
     commands:
