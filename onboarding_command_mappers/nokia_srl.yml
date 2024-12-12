@@ -1,0 +1,36 @@
+---
+sync_devices:
+  hostname:
+    commands:
+      - command: "show version | as json"
+        parser: "none"
+        jpath: "'basic system info'.Hostname"
+        post_processor: "{{ obj[0] | upper }}"
+        iterable_type: "str"
+  serial:
+    commands:
+      - command: "show version | as json"
+        parser: "none"
+        jpath: "'basic system info'.'Serial Number'"
+        post_processor: "{{ obj | unique | first }}"
+        iterable_type: "str"
+  device_type:
+    commands:
+      - command: "show version | as json"
+        parser: "none"
+        jpath: "'basic system info'.'Chassis Type'"
+        post_processor: "{{ obj | unique | first }}"
+        iterable_type: "str"
+  mgmt_interface:
+    commands:
+      - command: "show interface all | as json"
+        parser: "none"
+        jpath: "[?address=='{{ obj }}'].{name: interface, oper-status: link_status}"
+        post_processor: "{{ obj.interfaces | selectattr('name','eq','mgmt0') | map(attribute='subinterfaces') | first | selectattr('address') | list }}"
+  mask_length:
+    commands:
+      - command: "show interface all | as json"
+        parser: "none"
+        jpath: "[?ip_address=='{{ obj }}'].prefix_length"
+        post_processor: "{{ obj | unique | first }}"
+        iterable_type: "int"
