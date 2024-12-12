@@ -25,8 +25,7 @@ sync_devices:
     commands:
       - command: "show interface all | as json"
         parser: "none"
-        jpath: '[?address=="{{ obj }}"].{name: interface, oper-status: link_status}'
-        post_processor: "{{ obj.interfaces | selectattr('name','eq','mgmt0') | map(attribute='subinterfaces') | first | selectattr('address') | list }}"
+        jpath: interfaces[?name=='mgmt0'].subinterfaces[0][].{name: name, enabled: "oper-state"}
   mask_length:
     commands:
       - command: "show interface all | as json"
