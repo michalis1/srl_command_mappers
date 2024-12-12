@@ -18,8 +18,8 @@ sync_devices:
     commands:
       - command: "show version | as json"
         parser: "none"
-        jpath: "'basic system info'.'Chassis Type'"
-        # post_processor: "{{ obj | unique | first }}"
+        jpath: "{{ obj }}"
+        post_processor: "{{ obj['basic system info']['Chassis Type'] }}"
         iterable_type: "str"
   mgmt_interface:
     commands:
