@@ -4,7 +4,7 @@ sync_devices:
     commands:
       - command: "show version | as json"
         parser: "none"
-        jpath: 'Hostname'
+        jpath: '"basic system info".Hostname'
         iterable_type: "str"
   serial:
     commands:
@@ -16,7 +16,7 @@ sync_devices:
     commands:
       - command: "show version | as json"
         parser: "none"
-        jpath: '"Chassis Type"'
+        jpath: '"basic system info"."Chassis Type"'
         iterable_type: "str"
   mgmt_interface:
     commands:
