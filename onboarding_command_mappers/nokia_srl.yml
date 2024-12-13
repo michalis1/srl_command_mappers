@@ -28,4 +28,4 @@ sync_devices:
       - command: "show interface all | as json"
         parser: "none"
         jpath: "interfaces[?address[?contains(prefix,'{{ obj }}')]][].address || interfaces[?name=='mgmt0'][].subinterfaces[?address[?contains(prefix,'{{ obj }}')]][].address[0]"
-        post_processor: "{% if '/' in obj[0] %}{{ obj[0].split('/')[1] }}{% else %}31{% endif %}"
+        post_processor: "{% if '/' in obj[0].prefix %}{{ obj[0].prefix.split('/')[1] }}{% else %}31{% endif %}"
