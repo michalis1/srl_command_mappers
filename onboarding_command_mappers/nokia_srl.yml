@@ -24,7 +24,7 @@ sync_devices:
         parser: "none"
         jpath: "interfaces[?address[?contains(prefix,'{{ obj }}')]][].name || interfaces[?name=='mgmt0'][].subinterfaces[?address[?contains(prefix,'{{ obj }}')]][].name"
         post_processor: "{{ obj | first }}"
-        iterable_type: "int"
+        iterable_type: "str"
   mask_length:
     commands:
       - command: "show interface all | as json"
