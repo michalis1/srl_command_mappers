@@ -22,10 +22,10 @@ sync_devices:
     commands:
       - command: "show interface all | as json"
         parser: "none"
-        jpath: "interfaces[?name=='mgmt0'].subinterfaces[0][].name"
+        jpath: "interfaces[?address[?prefix==''{{ obj }}']].name || interfaces[?name=='mgmt0'][].subinterfaces[?address[?prefix=='{{ obj }}']].name"
   mask_length:
     commands:
       - command: "show interface all | as json"
         parser: "none"
-        jpath: "interfaces[?name=='mgmt0'].subinterfaces[0][].name"
-        post_processor: "{{ obj }}"
+        jpath: "interfaces[?address[?prefix==''{{ obj }}']].address || interfaces[?name=='mgmt0'][].subinterfaces[?address[?prefix=='{{ obj }}']].address"
+        post_processor: "{% if '/' in obj[0] %}{{ obj[0].split('/')[1] }}{% else %}31{% endif %}"
