@@ -1,4 +1,37 @@
 ---
+sync_devices:
+  hostname:
+    commands:
+      - command: "show version"
+        parser: "textfsm"
+        jpath: "[*].hostname"
+  serial:
+    commands:
+      - command: "show version"
+        parser: "textfsm"
+        jpath: "[*].serial[]"
+        post_processor: "{{ obj | unique | first }}"
+        iterable_type: "str"
+  device_type:
+    commands:
+      - command: "show version"
+        parser: "textfsm"
+        jpath: "[*].hardware[]"
+        post_processor: "{{ obj | unique | first }}"
+        iterable_type: "str"
+  mgmt_interface:
+    commands:
+      - command: "show interfaces"
+        parser: "textfsm"
+        jpath: "[?ip_address=='{{ obj }}'].{name: interface, enabled: link_status}"
+        post_processor: "{{ (obj | selectattr('enabled', 'eq', 'up') | list | first ).name }}"
+  mask_length:
+    commands:
+      - command: "show interfaces"
+        parser: "textfsm"
+        jpath: "[?ip_address=='{{ obj }}'].prefix_length"
+        post_processor: "{{ obj | unique | first }}"
+        iterable_type: "int"
 sync_network_data:
   pre_processor:
     vlan_map:
