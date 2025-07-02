@@ -59,7 +59,7 @@ sync_network_data:
     commands:
       - command: "show interfaces"
         parser: "textfsm"
-        jpath: "[?interface=='{{ current_key }}'].hardware_type"
+        jpath: "[?interface=='{{ current_key }}'].interface"
         post_processor: "{{ obj[0] | map_interface_type }}"
   interfaces__ip_addresses:
     commands:
