@@ -1,0 +1,8 @@
+---
+sync_network_data:
+  interfaces__type:
+    commands:
+      - command: "show interfaces"
+        parser: "textfsm"
+        jpath: "[?interface=='{{ current_key }}'].hardware_type"
+        post_processor: "{{ obj[0] | map_interface_type }}"
